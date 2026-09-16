@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Probador Virtual</title>
+    <!-- Script de Puter.js para generación de imágenes -->
+    <script src="https://cdn.jsdelivr.net/npm/puter-js@latest/dist/puter.min.js"></script>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -53,13 +55,39 @@
         .cta-button:hover {
             background-color: #0060cc;
         }
+        #result-container {
+            margin-top: 2rem;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Probador Virtual</h1>
         <p>Previsualiza cómo luce esta prenda en tu cuerpo antes de realizar tu compra.</p>
-        <button class="cta-button" onclick="alert('Función de prueba en desarrollo.')">Pruébatelo Ahora</button>
+        <button class="cta-button" id="try-button">Pruébatelo Ahora</button>
+        <div id="result-container"></div>
     </div>
+
+    <script>
+        document.getElementById('try-button').addEventListener('click', async () => {
+            const container = document.getElementById('result-container');
+            container.innerHTML = '<p>Generando prueba virtual...</p>';
+
+            try {
+                // Función de Puter.js para generar imagen
+                const imageElement = await puter.ai.txt2img("A realistic model wearing a modern streetwear hoodie, high quality, studio lighting");
+                container.innerHTML = ''; // Limpiar mensaje de carga
+                container.appendChild(imageElement);
+            } catch (error) {
+                console.error("Error al generar la imagen:", error);
+                container.innerHTML = '<p>Hubo un error al generar la imagen. Inténtalo de nuevo.</p>';
+            }
+        });
+    </script>
 </body>
 </html>
